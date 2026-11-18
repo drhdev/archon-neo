@@ -19,6 +19,7 @@ Turn-based strategy on a magic board meets real-time arena duels, right in your 
 ## Table of contents
 
 - [About](#about)
+- [The Legend](#the-legend)
 - [Features](#features)
 - [How to play](#how-to-play)
 - [Quick start](#quick-start)
@@ -36,17 +37,43 @@ Archon NEO is a nostalgic, non-commercial re-imagining of *Archon: The Light and
 
 It is a single static web app – plain HTML5 canvas, CSS and vanilla JavaScript modules. **No build step, no frameworks, no trackers, no external requests** (no Google Fonts, no CDNs). Everything the game needs ships in this repository.
 
+## The Legend
+
+> *Before the first dawn there was only the Balance – one world held between two forces.*
+> *The **Light**, warm and steadfast. The **Darkness**, cold and cunning.*
+> *Neither can exist without the other. Neither will ever rest.*
+
+At the heart of this world lies the **Board of Power**: eighty-one squares of living stone, older than memory. Whoever commands its five **Power Points** becomes the **Archon** – and binds the other side for an age.
+
+Now the age has turned. The **Wizard of Light** and the **Sorceress of Darkness** call their armies to the board, and the war for the Balance begins anew.
+
+**The board breathes.** Light squares burn with the strength of the Light, dark squares feed the shadows – and between them lie the restless squares that follow the *cycle of light*, brightening as the sun rises and fading as night returns. Time is a weapon: strike while the cycle favours you and your champion enters battle with up to seven extra points of life. Strike at the wrong moment and even a dragon can fall. A wounded piece resting on a Power Point heals swiftly – and no spell can touch it.
+
+**The armies.** The Light fights with reach and precision: steadfast **Knights**, patient **Archers**, spear-hurling **Valkyries**, boulder-throwing **Golems**, lightning-fast **Unicorns**, the storm spirit **Djinni** and the **Phoenix**, who bursts into flame and cannot be harmed while it burns. The Darkness answers with venom, terror and fire: swarming **Goblins**, spike-firing **Manticores**, the wailing **Banshee**, hulking **Trolls**, the **Basilisk** whose gaze is death, the mighty **Dragon** – and the **Shapeshifter**, who has no form of its own and becomes a perfect copy of whatever it fights.
+
+**The arena.** When two enemies meet on the same square, the board falls away and the arena opens. No dice decide here – only reflexes, distance and nerve. Every champion strikes in eight directions only, every weapon has its own range and reload time, and ancient stone pillars rise from the floor and sink again, blocking bodies and missiles while they stand.
+
+**The old magic.** Only the two masters command the seven spells – Teleport, Heal, Shift Time, Exchange, Summon Elemental, Revive and Imprison – and each can be woven only once per war. Should a master fall, their magic dies with them.
+
+**Three paths lead to the Archon's throne:** seize all five Power Points at once, destroy every enemy piece, or leave the enemy nothing but imprisoned pieces.
+
+*The board is set. The cycle turns. Which side will you fight for?*
+
+The game tells this story itself: an illustrated seven-chapter intro with every unit's portrait, lore and stats opens on first launch and is always available under **The Legend** in the menu.
+
 ## Features
 
+- **The Legend** – an illustrated, bilingual story intro that introduces the world, every unit, the arena, the magic and the paths to victory.
 - **Faithful rules** – 9×9 board, 18 pieces per side in the original line-up, light/dark/cycling squares, 5 power points, original lifespans and attack strengths.
-- **Real-time arena** – duels with 8-direction attacks, weapon ranges and reload times, obstacles that fade in and out, plus the classic specials (invulnerable Phoenix blast, Banshee wail, Shapeshifter copying its foe).
+- **Real-time arena** – duels with 8-direction attacks, weapon ranges and reload times, stone pillars that fade in and out, plus the classic specials (invulnerable Phoenix blast, Banshee wail, Shapeshifter copying its foe). Painted in high resolution: flagstones in the colour of the contested square, an engraved compass of the eight directions, faceted pillars with shimmering runes.
+- **Sound & music** – a SID-inspired synthesizer built on the Web Audio API: a distinct sound for every weapon, footsteps on the board, stereo panning, reverb and original background music for the title, the board and the arena. No audio files.
 - **All 7 original spells** – Teleport, Heal, Shift Time, Exchange, Summon Elemental, Revive, Imprison.
 - **Game modes** – single player against the AI in **three difficulty levels** (Easy, Normal, Hard) as Light or Darkness, and 2-player pass & play on one device.
 - **Bilingual** – English and German, detected automatically and switchable in the menu.
 - **Mobile first** – optimised for iPhone Safari and Android Chrome: no scrolling, rubber-banding or zoom, safe-area aware, full screen on Android, haptic feedback, screen kept awake while playing.
 - **Installable & offline** – Progressive Web App with a service worker; plays without a connection after the first visit.
 - **Resilient** – auto-save after every turn with "Continue game", validated save data, a watchdog that recovers stuck turns, an error boundary that keeps the render loop alive, automatic pause when the app goes to the background.
-- **Accessible-minded** – keyboard support on desktop (WASD/arrows + Space, 2nd player IJKL + Enter, Esc = pause), focus styles, `prefers-reduced-motion` support, ARIA labels.
+- **Accessible-minded** – full keyboard play on desktop (board cursor with arrows/WASD + Enter, E = spellbook; arena WASD/arrows + Space, 2nd player IJKL + Enter; Esc = pause), focus styles, `prefers-reduced-motion` support, ARIA labels.
 
 ## How to play
 
@@ -136,6 +163,9 @@ docker run -d -p 8080:8080 -e SITE_URL=https://archon.example.com \
 │   ├── js/
 │   │   ├── game.js          # Rules, AI, arena, rendering, resilience
 │   │   ├── art.js           # Vector unit artwork (rasterised & cached)
+│   │   ├── arena-art.js     # Procedural arena floor and stone pillars
+│   │   ├── audio.js         # Synthesised sound effects and music
+│   │   ├── intro.js         # "The Legend" story intro
 │   │   ├── i18n.js          # English / German strings
 │   │   └── nomodule.js      # Message for very old browsers
 │   ├── sw.js                # Service worker (offline)

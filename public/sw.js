@@ -3,7 +3,7 @@
  * Network-first with a short timeout and cache fallback: always fresh when online,
  * fully playable offline. Bump VERSION on every release (CI checks it matches game.js).
  */
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 const CACHE = `archon-neo-${VERSION}`;
 const CORE = [
   './',
@@ -12,6 +12,9 @@ const CORE = [
   'js/game.js',
   'js/i18n.js',
   'js/art.js',
+  'js/audio.js',
+  'js/intro.js',
+  'js/arena-art.js',
   'manifest.webmanifest',
   'icons/favicon.svg',
   'icons/icon-192.png',

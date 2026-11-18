@@ -14,7 +14,8 @@ const RULES_EN = `
 <p><b>Combat:</b> Moving onto an enemy starts a real-time duel. Move with the joystick (bottom left) and attack with the button (bottom right). As in the original, attacks only go in 8 directions (arrow at your piece); every weapon has its own range and reload time (ring around the attack button). Obstacles fade in and out – while solid they block movement and shots.</p>
 <p><b>Specials:</b> The Phoenix bursts into flames and is invulnerable meanwhile. The Banshee’s wail hurts everything near her. The Shapeshifter takes on the form, weapon and life of its opponent.</p>
 <p><b>Magic:</b> Select your Wizard or Sorceress and tap “Spell”. There are the 7 original spells: Teleport, Heal, Shift Time, Exchange, Summon Elemental, Revive and Imprison. Each can be cast once per game and uses up your turn.</p>
-<p><b>Two players:</b> In combat Light plays at the bottom, Darkness at the top (rotated controls) – put the phone flat between you.</p>`;
+<p><b>Two players:</b> In combat Light plays at the bottom, Darkness at the top (rotated controls) – put the phone flat between you.</p>
+<p><b>Keyboard:</b> On the board, arrow keys or WASD move the cursor, Enter or Space selects and moves, E opens the spellbook. In the arena: WASD/arrows + Space (second player: IJKL + Enter). Esc pauses.</p>`;
 
 const RULES_DE = `
 <p><b>Ziel:</b> Lösche alle gegnerischen Figuren aus, besetze alle 5 Machtpunkte (◇) gleichzeitig – oder lass dem Gegner nur noch gefangene Figuren.</p>
@@ -24,7 +25,8 @@ const RULES_DE = `
 <p><b>Kampf:</b> Ziehst du auf eine gegnerische Figur, beginnt ein Echtzeit-Duell. Links unten bewegst du dich mit dem Joystick, rechts unten greifst du an. Wie im Original wird nur in 8 Richtungen angegriffen (Pfeil an der Figur), jede Waffe hat eigene Reichweite und Nachladezeit (Ring um den Angriffs-Button). Hindernisse tauchen auf und verschwinden – solange sie fest sind, blockieren sie Bewegung und Schüsse.</p>
 <p><b>Besonderheiten:</b> Der Phönix explodiert in Flammen und ist dabei unverwundbar. Die Banshee schadet mit ihrem Klageschrei allem in ihrer Nähe. Der Gestaltwandler nimmt Gestalt, Waffe und Lebenskraft seines Gegners an.</p>
 <p><b>Magie:</b> Wähle Magier bzw. Hexe und tippe auf „Zauber“. Es gibt die 7 Zauber des Originals: Teleport, Heilen, Zeitverschiebung, Tausch, Elementar beschwören, Wiederbeleben und Kerker. Jeder Zauber geht nur einmal pro Partie und kostet einen Zug.</p>
-<p><b>2 Spieler:</b> Im Kampf spielt Licht unten, Dunkelheit oben (gedrehte Steuerung) – legt das Handy flach zwischen euch.</p>`;
+<p><b>2 Spieler:</b> Im Kampf spielt Licht unten, Dunkelheit oben (gedrehte Steuerung) – legt das Handy flach zwischen euch.</p>
+<p><b>Tastatur:</b> Auf dem Brett bewegen Pfeiltasten oder WASD den Cursor, Enter oder Leertaste wählt aus und zieht, E öffnet das Zauberbuch. In der Arena: WASD/Pfeile + Leertaste (zweiter Spieler: IJKL + Enter). Esc pausiert.</p>`;
 
 const STRINGS = {
   en: {
@@ -41,7 +43,7 @@ const STRINGS = {
     'soon.online': 'Live online battles',
     'soon.hof': 'Hall of Fame & leaderboard',
     'soon.lobby': 'Lobby – challenge human players who are ready to play',
-    'menu.hint': 'iPhone: turn off silent mode for sound, “Add to Home Screen” for full screen. Android: starts in full screen, Back = pause.',
+    'menu.hint': 'iPhone: turn off silent mode for sound, “Add to Home Screen” for full screen. Android: starts in full screen, Back = pause. Desktop: arrows/WASD + Enter on the board, WASD + Space in the arena, Esc = pause.',
     'menu.disclaimer': 'A non-commercial fan tribute. Not affiliated with the original rights holders.',
     'lang.switch': 'Deutsch',
     'lang.aria': 'Switch language',
@@ -170,7 +172,7 @@ const STRINGS = {
     'soon.online': 'Live-Online-Duelle',
     'soon.hof': 'Hall of Fame & Bestenliste',
     'soon.lobby': 'Lobby – spielbereite menschliche Gegner herausfordern',
-    'menu.hint': 'iPhone: Für Ton den Stummschalter deaktivieren, „Zum Home-Bildschirm“ für Vollbild. Android: startet im Vollbild, Zurück = Pause.',
+    'menu.hint': 'iPhone: Für Ton den Stummschalter deaktivieren, „Zum Home-Bildschirm“ für Vollbild. Android: startet im Vollbild, Zurück = Pause. Desktop: Pfeile/WASD + Enter auf dem Brett, WASD + Leertaste in der Arena, Esc = Pause.',
     'menu.disclaimer': 'Eine nicht-kommerzielle Fan-Hommage. Keine Verbindung zu den ursprünglichen Rechteinhabern.',
     'lang.switch': 'English',
     'lang.aria': 'Sprache wechseln',
@@ -286,6 +288,155 @@ const STRINGS = {
     'unit.water.name': 'Wasserelementar', 'unit.water.role': 'Elementar · Eis',
   },
 };
+
+/* ------------------------------------------------------------------------
+ * The Legend – story intro, unit lore and interface strings added in 1.1.
+ * Original text written for Archon NEO.
+ * ---------------------------------------------------------------------- */
+const LEGEND = {
+  en: {
+    'splash.tagline': 'Since the first dawn, Light and Darkness have fought for the Balance.',
+    'splash.tap': 'Tap to begin',
+    'splash.key': 'Press any key',
+    'menu.legend': 'The Legend',
+    'pause.musicOn': 'Music: on',
+    'pause.musicOff': 'Music: off',
+    'intro.skip': 'Skip',
+    'intro.next': 'Next',
+    'intro.back': 'Back',
+    'intro.start': 'Choose your side',
+    'intro.aria': 'The Legend of Archon',
+    'stat.life': 'Life', 'stat.str': 'Strength', 'stat.spd': 'Speed', 'stat.move': 'Move',
+    'stat.special': 'Special',
+    'ch1.kicker': 'Prologue',
+    'ch1.title': 'The Eternal Balance',
+    'ch1.p1': 'Before the first dawn there was only the Balance – one world held between two forces. The <em class="lt">Light</em>, warm and steadfast. The <em class="dk">Darkness</em>, cold and cunning. Neither can exist without the other. Neither will ever rest.',
+    'ch1.p2': 'At the heart of this world lies the Board of Power: eighty-one squares of living stone, older than memory. Whoever commands its five Power Points becomes the <b>Archon</b> – and binds the other side for an age.',
+    'ch1.p3': 'Now the age has turned. The Wizard of Light and the Sorceress of Darkness call their armies to the board. The war for the Balance begins anew – and <b>you</b> will decide it.',
+    'ch2.kicker': 'Chapter I',
+    'ch2.title': 'The Board of Power',
+    'ch2.p1': 'Its squares are not mere stone. <em class="lt">Light squares</em> burn with the strength of the Light, <em class="dk">dark squares</em> feed the shadows. Between them lie the restless squares that follow the <b>cycle of light</b> – brightening as the sun rises, fading as the night returns.',
+    'ch2.p2': 'Time is a weapon. Strike while the cycle favours you and your champion enters battle with up to <b>seven extra points of life</b>. Strike at the wrong moment and even a dragon can fall.',
+    'ch2.p3': 'Five <b>Power Points ◇</b> glow upon the board. A wounded piece resting there heals swiftly – and no spell can touch it.',
+    'ch3.kicker': 'Chapter II',
+    'ch3.title': 'The Armies of Light',
+    'ch3.p1': 'Noble, swift and disciplined. The Light fights with reach and precision – archers and unicorns strike from afar, golems crush whatever stands in their way. They begin at the bottom of the board.',
+    'ch4.kicker': 'Chapter III',
+    'ch4.title': 'The Hordes of Darkness',
+    'ch4.p1': 'Cruel, cunning and many-faced. The Darkness strikes with venom, terror and fire – and with creatures that cannot be fought the usual way. They descend from the top of the board.',
+    'ch5.kicker': 'Chapter IV',
+    'ch5.title': 'The Arena',
+    'ch5.p1': 'When two enemies meet on the same square, the board falls away and the <b>Arena</b> opens. No dice decide here – only reflexes, distance and nerve.',
+    'ch5.p2': 'Move with the <b>joystick</b>, strike with the <b>attack button</b>. As in the battles of old, every champion strikes in <b>eight directions</b> only, and every weapon has its own range and reload time. Keep your distance – or close in for the kill.',
+    'ch5.p3': 'Ancient pillars rise from the floor and sink again. While solid, they stop bodies and missiles alike. The floor takes the colour of the contested square – and with it the strength of Light or Darkness.',
+    'ch5.move': 'Move', 'ch5.attack': 'Attack', 'ch5.keys': 'Keyboard: WASD / arrows + Space',
+    'ch6.kicker': 'Chapter V',
+    'ch6.title': 'The Old Magic',
+    'ch6.p1': 'Only the two masters – the Wizard and the Sorceress – command the old magic. Seven spells lie in their grasp, but each can be woven <b>only once</b> per war, and every spell costs a turn. Should a master fall, their magic dies with them.',
+    'ch6.p2': 'The Summon spell tears an <b>elemental</b> from the raw forces of the world. It fights a single battle – then dissolves into nothing.',
+    'ch7.kicker': 'Epilogue',
+    'ch7.title': 'The Paths to Victory',
+    'ch7.p1': 'Three paths lead to the Archon’s throne:',
+    'ch7.v1': '<b>Seize the five Power Points</b> – hold all of them at once and the Balance is yours.',
+    'ch7.v2': '<b>Annihilate</b> – destroy every piece of the enemy.',
+    'ch7.v3': '<b>Imprison</b> – leave your enemy nothing but chained and helpless pieces.',
+    'ch7.p2': 'The board is set. The cycle turns. Which side will you fight for?',
+    'combat.bonus': 'Square +{n} life',
+    'go.stats': 'Round {r} · Light {l} · Darkness {d} pieces left',
+    'unit.knight.lore': 'Sworn defenders of the Light. Quick blades, unwavering hearts – always in the front line.',
+    'unit.archer.lore': 'Patient hunters who strike from afar. An archer who keeps her distance is deadly.',
+    'unit.valkyrie.lore': 'Winged maidens of war who soar above the battle and hurl their enchanted spears.',
+    'unit.golem.lore': 'Living stone, slow as the mountains. Its hurled boulders crush almost anything they hit.',
+    'unit.unicorn.lore': 'Swift and proud. From its horn it fires bolts of pure light, faster than the eye can follow.',
+    'unit.djinni.lore': 'A storm spirit bound to the Light. Its whirlwinds are slow – but they hit hard.',
+    'unit.phoenix.lore': 'The firebird bursts into flame and cannot be wounded while it burns. Everything around it does.',
+    'unit.wizard.lore': 'Master of the Light and keeper of its magic. Hurls fireballs and teleports to any square.',
+    'unit.goblin.lore': 'Cunning, greedy and countless. Goblins swing their clubs and trust in sheer numbers.',
+    'unit.manticore.lore': 'A lion with a scorpion’s tail that fires volleys of poisoned spikes.',
+    'unit.banshee.lore': 'Her wail tears at the soul – everything near her withers while she screams.',
+    'unit.troll.lore': 'Brute strength in a lumbering body. Its boulders strike as hard as a golem’s.',
+    'unit.basilisk.lore': 'Its gaze is death: a searing beam that strikes from afar. Fragile, but lethal.',
+    'unit.dragon.lore': 'The mightiest creature on the board. Its fire has a short reach – few survive it.',
+    'unit.shapeshifter.lore': 'It has no form of its own. In battle it becomes a perfect copy of its foe – weapon, strength and all.',
+    'unit.sorceress.lore': 'Mistress of Darkness. She casts lightning and steps through shadow to any square she desires.',
+    'unit.air.lore': 'A howling vortex that hurls whirlwinds.',
+    'unit.earth.lore': 'A walking mountain – slow, enduring, crushing.',
+    'unit.fire.lore': 'Flame given will. It scorches everything near.',
+    'unit.water.lore': 'A living tide that hurls shards of ice.',
+  },
+  de: {
+    'splash.tagline': 'Seit dem ersten Morgen kämpfen Licht und Dunkelheit um das Gleichgewicht.',
+    'splash.tap': 'Tippen zum Starten',
+    'splash.key': 'Beliebige Taste drücken',
+    'menu.legend': 'Die Legende',
+    'pause.musicOn': 'Musik: an',
+    'pause.musicOff': 'Musik: aus',
+    'intro.skip': 'Überspringen',
+    'intro.next': 'Weiter',
+    'intro.back': 'Zurück',
+    'intro.start': 'Wähle deine Seite',
+    'intro.aria': 'Die Legende von Archon',
+    'stat.life': 'Leben', 'stat.str': 'Stärke', 'stat.spd': 'Tempo', 'stat.move': 'Zug',
+    'stat.special': 'Besonderheit',
+    'ch1.kicker': 'Prolog',
+    'ch1.title': 'Das ewige Gleichgewicht',
+    'ch1.p1': 'Vor dem ersten Morgen gab es nur das Gleichgewicht – eine Welt, gehalten zwischen zwei Mächten. Das <em class="lt">Licht</em>, warm und standhaft. Die <em class="dk">Dunkelheit</em>, kalt und listig. Keine kann ohne die andere bestehen. Keine wird je ruhen.',
+    'ch1.p2': 'Im Herzen dieser Welt liegt das Brett der Macht: einundachtzig Felder aus lebendem Stein, älter als jede Erinnerung. Wer seine fünf Machtpunkte beherrscht, wird zum <b>Archon</b> – und bindet die andere Seite für ein Zeitalter.',
+    'ch1.p3': 'Nun hat sich das Zeitalter gewendet. Der Magier des Lichts und die Hexe der Dunkelheit rufen ihre Heere auf das Brett. Der Krieg um das Gleichgewicht beginnt von Neuem – und <b>du</b> wirst ihn entscheiden.',
+    'ch2.kicker': 'Kapitel I',
+    'ch2.title': 'Das Brett der Macht',
+    'ch2.p1': 'Seine Felder sind kein gewöhnlicher Stein. <em class="lt">Helle Felder</em> brennen mit der Kraft des Lichts, <em class="dk">dunkle Felder</em> nähren die Schatten. Dazwischen liegen die rastlosen Felder, die dem <b>Lichtzyklus</b> folgen – sie erstrahlen, wenn die Sonne steigt, und verblassen, wenn die Nacht zurückkehrt.',
+    'ch2.p2': 'Die Zeit ist eine Waffe. Schlag zu, wenn der Zyklus dir gewogen ist, und dein Kämpfer zieht mit bis zu <b>sieben zusätzlichen Lebenspunkten</b> in die Schlacht. Schlag im falschen Moment zu – und selbst ein Drache kann fallen.',
+    'ch2.p3': 'Fünf <b>Machtpunkte ◇</b> leuchten auf dem Brett. Eine verwundete Figur heilt dort schnell – und kein Zauber kann ihr etwas anhaben.',
+    'ch3.kicker': 'Kapitel II',
+    'ch3.title': 'Die Heere des Lichts',
+    'ch3.p1': 'Edel, schnell und diszipliniert. Das Licht kämpft mit Reichweite und Präzision – Bogenschützen und Einhörner treffen aus der Ferne, Golems zermalmen, was sich ihnen in den Weg stellt. Sie beginnen am unteren Rand des Bretts.',
+    'ch4.kicker': 'Kapitel III',
+    'ch4.title': 'Die Horden der Dunkelheit',
+    'ch4.p1': 'Grausam, listig und vielgestaltig. Die Dunkelheit schlägt mit Gift, Schrecken und Feuer zu – und mit Kreaturen, gegen die man nicht auf gewöhnliche Weise kämpfen kann. Sie steigen vom oberen Rand des Bretts herab.',
+    'ch5.kicker': 'Kapitel IV',
+    'ch5.title': 'Die Arena',
+    'ch5.p1': 'Treffen zwei Feinde auf demselben Feld aufeinander, versinkt das Brett und die <b>Arena</b> öffnet sich. Hier entscheidet kein Würfel – nur Reflexe, Abstand und Nerven.',
+    'ch5.p2': 'Bewege dich mit dem <b>Joystick</b>, schlage mit dem <b>Angriffsknopf</b> zu. Wie in den Schlachten von einst greift jeder Kämpfer nur in <b>acht Richtungen</b> an, und jede Waffe hat ihre eigene Reichweite und Nachladezeit. Halte Abstand – oder geh auf Tuchfühlung.',
+    'ch5.p3': 'Uralte Säulen steigen aus dem Boden und versinken wieder. Solange sie fest sind, halten sie Körper und Geschosse auf. Der Boden nimmt die Farbe des umkämpften Feldes an – und mit ihr die Kraft von Licht oder Dunkelheit.',
+    'ch5.move': 'Bewegen', 'ch5.attack': 'Angriff', 'ch5.keys': 'Tastatur: WASD / Pfeile + Leertaste',
+    'ch6.kicker': 'Kapitel V',
+    'ch6.title': 'Die alte Magie',
+    'ch6.p1': 'Nur die beiden Meister – der Magier und die Hexe – gebieten über die alte Magie. Sieben Zauber liegen in ihrer Hand, doch jeder lässt sich <b>nur einmal</b> pro Krieg wirken, und jeder Zauber kostet einen Zug. Fällt ein Meister, stirbt seine Magie mit ihm.',
+    'ch6.p2': 'Der Beschwörungszauber reißt ein <b>Elementar</b> aus den Urkräften der Welt. Es kämpft eine einzige Schlacht – und zerfällt dann zu nichts.',
+    'ch7.kicker': 'Epilog',
+    'ch7.title': 'Die Wege zum Sieg',
+    'ch7.p1': 'Drei Wege führen zum Thron des Archon:',
+    'ch7.v1': '<b>Erobere die fünf Machtpunkte</b> – halte alle zugleich, und das Gleichgewicht gehört dir.',
+    'ch7.v2': '<b>Vernichte</b> – zerstöre jede Figur des Feindes.',
+    'ch7.v3': '<b>Kerkere ein</b> – lass dem Feind nichts als gefesselte, hilflose Figuren.',
+    'ch7.p2': 'Das Brett ist bereit. Der Zyklus dreht sich. Für welche Seite wirst du kämpfen?',
+    'combat.bonus': 'Feld +{n} Leben',
+    'go.stats': 'Runde {r} · Licht {l} · Dunkelheit {d} Figuren übrig',
+    'unit.knight.lore': 'Geschworene Verteidiger des Lichts. Schnelle Klingen, unbeugsame Herzen – stets in vorderster Reihe.',
+    'unit.archer.lore': 'Geduldige Jägerinnen, die aus der Ferne treffen. Eine Bogenschützin auf Abstand ist tödlich.',
+    'unit.valkyrie.lore': 'Geflügelte Kriegerinnen, die über die Schlacht hinwegschweben und verzauberte Speere schleudern.',
+    'unit.golem.lore': 'Lebender Stein, langsam wie die Berge. Seine Felsbrocken zermalmen fast alles, was sie treffen.',
+    'unit.unicorn.lore': 'Schnell und stolz. Aus seinem Horn schießt es Blitze aus reinem Licht – schneller, als das Auge folgen kann.',
+    'unit.djinni.lore': 'Ein Sturmgeist im Dienst des Lichts. Seine Wirbelwinde sind langsam – aber sie treffen hart.',
+    'unit.phoenix.lore': 'Der Feuervogel geht in Flammen auf und ist unverwundbar, solange er brennt. Alles um ihn herum nicht.',
+    'unit.wizard.lore': 'Meister des Lichts und Hüter seiner Magie. Schleudert Feuerbälle und teleportiert sich auf jedes Feld.',
+    'unit.goblin.lore': 'Listig, gierig und zahllos. Kobolde schwingen ihre Keulen und vertrauen auf ihre schiere Zahl.',
+    'unit.manticore.lore': 'Ein Löwe mit Skorpionschwanz, der Salven giftiger Stacheln verschießt.',
+    'unit.banshee.lore': 'Ihr Klageschrei zerreißt die Seele – alles in ihrer Nähe welkt dahin, solange sie schreit.',
+    'unit.troll.lore': 'Rohe Kraft in einem schwerfälligen Körper. Seine Felsbrocken treffen so hart wie die eines Golems.',
+    'unit.basilisk.lore': 'Sein Blick ist der Tod: ein sengender Strahl, der aus der Ferne trifft. Zerbrechlich, aber tödlich.',
+    'unit.dragon.lore': 'Die mächtigste Kreatur auf dem Brett. Sein Feuer reicht nicht weit – doch kaum jemand überlebt es.',
+    'unit.shapeshifter.lore': 'Er hat keine eigene Gestalt. Im Kampf wird er zum perfekten Abbild seines Gegners – mit Waffe und Kraft.',
+    'unit.sorceress.lore': 'Herrin der Dunkelheit. Sie schleudert Blitze und tritt durch die Schatten auf jedes Feld, das sie begehrt.',
+    'unit.air.lore': 'Ein heulender Wirbel, der Sturmböen schleudert.',
+    'unit.earth.lore': 'Ein wandelnder Berg – langsam, ausdauernd, zermalmend.',
+    'unit.fire.lore': 'Flamme, die einen Willen hat. Sie versengt alles in ihrer Nähe.',
+    'unit.water.lore': 'Eine lebendige Flut, die Eissplitter schleudert.',
+  },
+};
+Object.assign(STRINGS.en, LEGEND.en);
+Object.assign(STRINGS.de, LEGEND.de);
 
 let current = 'en';
 

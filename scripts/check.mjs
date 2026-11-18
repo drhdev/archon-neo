@@ -30,16 +30,20 @@ for (const lang of ['en', 'de']) {
 
 // 2. keys used in code and markup
 const game = read('public/js/game.js');
+const intro = read('public/js/intro.js');
 const html = read('public/index.html');
 const used = new Set();
 for (const m of game.matchAll(/\bt\(\s*'([\w.]+)'/g)) used.add(m[1]);
 for (const m of game.matchAll(/\bt\([^)]*?\?\s*'([\w.]+)'\s*:\s*'([\w.]+)'/g)) { used.add(m[1]); used.add(m[2]); }
 for (const m of html.matchAll(/data-i18n(?:-html|-aria)?="([\w.]+)"/g)) used.add(m[1]);
+for (const m of intro.matchAll(/\bd\.t\(\s*'([\w.]+)'/g)) used.add(m[1]);
+// story texts and unit lore
+for (let n = 1; n <= 7; n++) for (const f of ['kicker', 'title']) used.add(`ch${n}.${f}`);
 for (const k of used) if (!(k in S.en)) fail(`i18n: key "${k}" is used but not defined`);
 
 // 3. units and spells
 for (const type of ART_TYPES) {
-  for (const f of ['name', 'role']) if (!(`unit.${type}.${f}` in S.en)) fail(`i18n: unit.${type}.${f} missing`);
+  for (const f of ['name', 'role', 'lore']) if (!(`unit.${type}.${f}` in S.en)) fail(`i18n: unit.${type}.${f} missing`);
   if (!new RegExp(`\\b${type}\\s*:\\s*\\{`).test(game)) fail(`units: art for "${type}" has no unit definition`);
 }
 const spells = (game.match(/const SPELLS = \[([^\]]+)\]/) || [])[1];

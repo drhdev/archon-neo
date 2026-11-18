@@ -10,6 +10,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Hall of Fame and leaderboard
 - Lobby to find and challenge human players
 
+## [1.1.0] – 2026-11-18
+
+### Added
+- **The Legend** – an illustrated story intro in seven chapters: the tale of the Balance, the board and the cycle of light, every unit with portrait, lore and stats, the arena, the old magic and the paths to victory. Shown on first launch and any time from the menu.
+- Title screen that unlocks audio with the first tap.
+- New audio engine: SID-inspired synthesis with compressor, generated reverb and stereo panning; a distinct sound for every weapon, footsteps per square on the board, power-point chime.
+- Original background music for the title/menu, the board and the arena, with a separate music switch.
+- Redesigned arena: painted flagstone floor in the colour of the contested square, engraved compass of the eight attack directions, faceted stone pillars with shimmering runes that dissolve and return, army-coloured frame.
+- Duel announcement with both champions' portraits, life and square bonus.
+- Keyboard play on the board (cursor with arrows/WASD, Enter/Space, E for the spellbook); Esc closes dialogs.
+- Game-over summary (round and remaining pieces).
+
+### Changed
+- Move animations now take longer for longer moves.
+- Story and lore typography uses the system serif font.
+
 ## [1.0.0] – 2026-11-18
 
 ### Added
@@ -26,5 +42,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - SEO: meta description, canonical URL, Open Graph/Twitter cards, JSON-LD, robots.txt, sitemap.xml, 404 page.
 - CI: syntax and consistency checks, Docker build and smoke test.
 
-[Unreleased]: https://github.com/drhdev/archon-neo/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/drhdev/archon-neo/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/drhdev/archon-neo/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/drhdev/archon-neo/releases/tag/v1.0.0

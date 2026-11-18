@@ -42,6 +42,9 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="modulepreload" href="js/i18n.js">
   <link rel="modulepreload" href="js/art.js">
+  <link rel="modulepreload" href="js/audio.js">
+  <link rel="modulepreload" href="js/intro.js">
+  <link rel="modulepreload" href="js/arena-art.js">
 
   <script type="application/ld+json">
   {
@@ -87,8 +90,33 @@
     <button id="btn-spell" class="hidden" type="button"></button>
   </footer>
 
+  <!-- Title screen (also unlocks audio with the first tap) -->
+  <div id="splash" class="overlay splash" role="button" tabindex="0" aria-describedby="splash-tap">
+    <div class="splash-inner">
+      <div class="splash-emblem" id="splash-emblem" aria-hidden="true"></div>
+      <h1 class="title big">ARCHON<span>NEO</span></h1>
+      <p class="tagline" data-i18n="splash.tagline">Since the first dawn, Light and Darkness have fought for the Balance.</p>
+      <p class="tap-hint" id="splash-tap" data-i18n="splash.tap">Tap to begin</p>
+    </div>
+  </div>
+
+  <!-- The Legend: story intro -->
+  <section id="intro" class="overlay intro hidden" role="dialog" aria-modal="true" data-i18n-aria="intro.aria" aria-label="The Legend of Archon">
+    <div class="intro-frame">
+      <header class="intro-top">
+        <div id="intro-dots" class="dots"></div>
+        <button id="intro-skip" class="link-btn" type="button" data-i18n="intro.skip">Skip</button>
+      </header>
+      <div id="intro-stage" class="intro-stage scroll"></div>
+      <footer class="intro-nav">
+        <button id="intro-prev" class="btn ghost" type="button" data-i18n="intro.back">Back</button>
+        <button id="intro-next" class="btn primary-light" type="button">Next</button>
+      </footer>
+    </div>
+  </section>
+
   <!-- Main menu -->
-  <main id="menu" class="overlay">
+  <main id="menu" class="overlay hidden">
     <div class="panel center scroll">
       <h1 class="title">ARCHON<span>NEO</span></h1>
       <p class="subtitle" data-i18n="menu.subtitle">Light vs. Dark</p>
@@ -108,8 +136,12 @@
       <button class="btn primary-dark" type="button" data-start="ai-dark" data-i18n="menu.playDark">1 Player · Darkness</button>
       <button class="btn" type="button" data-start="pvp" data-i18n="menu.pvp">2 Players · Pass &amp; Play</button>
       <div class="row">
+        <button class="btn ghost" type="button" data-open="legend" data-i18n="menu.legend">The Legend</button>
         <button class="btn ghost" type="button" data-open="rules" data-i18n="menu.rules">How to play</button>
-        <button class="btn ghost lang" type="button" data-action="lang" data-i18n="lang.switch" data-i18n-aria="lang.aria">Deutsch</button>
+      </div>
+      <div class="row">
+        <button class="btn ghost small" type="button" data-action="music">Music: on</button>
+        <button class="btn ghost small lang" type="button" data-action="lang" data-i18n="lang.switch" data-i18n-aria="lang.aria">Deutsch</button>
       </div>
 
       <section class="soon" aria-labelledby="soon-title">
@@ -134,7 +166,10 @@
     <div class="panel center">
       <h2 id="pause-title" data-i18n="pause.title">Paused</h2>
       <button class="btn" id="btn-resume" type="button" data-i18n="pause.resume">Resume</button>
-      <button class="btn" id="btn-sound" type="button">Sound: on</button>
+      <div class="row">
+        <button class="btn" id="btn-sound" type="button">Sound: on</button>
+        <button class="btn" type="button" data-action="music">Music: on</button>
+      </div>
       <div class="row">
         <button class="btn ghost" type="button" data-open="rules" data-i18n="menu.rules">How to play</button>
         <button class="btn ghost lang" type="button" data-action="lang" data-i18n="lang.switch" data-i18n-aria="lang.aria">Deutsch</button>
@@ -170,6 +205,7 @@
     <div class="panel center">
       <h2 id="go-title" class="title small"></h2>
       <p id="go-reason" class="subtitle"></p>
+      <p id="go-stats" class="hint"></p>
       <button class="btn primary-light" id="btn-again" type="button" data-i18n="go.again">Rematch</button>
       <button class="btn ghost" id="btn-go-menu" type="button" data-i18n="go.menu">Main menu</button>
     </div>
