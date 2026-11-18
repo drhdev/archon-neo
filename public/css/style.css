@@ -354,3 +354,23 @@ a { color: var(--accent); }
 /* ---------- 404 page ---------- */
 .page-404 { position: static; overflow: auto; height: auto; min-height: 100%; touch-action: auto; display: grid; place-items: center; padding: 24px; }
 .page-404 .panel { margin: auto; }
+
+/* ---------- install as app ---------- */
+.btn.install {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  background: rgba(95, 247, 230, 0.08); border-color: rgba(95, 247, 230, 0.35); color: var(--accent);
+}
+.btn.install svg { width: 20px; height: 20px; flex: none; }
+.install-icon { width: 72px; height: 72px; margin: 2px auto 0; border-radius: 17px; box-shadow: 0 0 26px rgba(120, 70, 255, 0.45); }
+.install-steps { counter-reset: step; list-style: none; display: flex; flex-direction: column; gap: 10px; text-align: left; margin: 4px 0 6px; }
+.install-steps li {
+  counter-increment: step; position: relative; padding: 11px 12px 11px 46px;
+  font-size: 14.5px; line-height: 1.45; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line);
+}
+.install-steps li::before {
+  content: counter(step); position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 13px; font-weight: 800; color: #021014; background: linear-gradient(135deg, #1fd1c0, #2a7fff);
+}
+.install-steps .ico { display: inline-block; width: 19px; height: 19px; vertical-align: -4px; margin: 0 2px; color: #4da3ff; }

@@ -71,6 +71,7 @@ The game tells this story itself: an illustrated seven-chapter intro with every 
 - **Game modes** – single player against the AI in **three difficulty levels** (Easy, Normal, Hard) as Light or Darkness, and 2-player pass & play on one device.
 - **Bilingual** – English and German, detected automatically and switchable in the menu.
 - **Mobile first** – optimised for iPhone Safari and Android Chrome: no scrolling, rubber-banding or zoom, safe-area aware, full screen on Android, haptic feedback, screen kept awake while playing.
+- **Install as app** – one tap in the menu installs Archon NEO on Android and desktop Chrome/Edge; on iPhone and iPad a short guide shows “Add to Home Screen”. Started from the home screen it runs full screen without browser bars and works offline, like a native app.
 - **Installable & offline** – Progressive Web App with a service worker; plays without a connection after the first visit.
 - **Resilient** – auto-save after every turn with "Continue game", validated save data, a watchdog that recovers stuck turns, an error boundary that keeps the render loop alive, automatic pause when the app goes to the background.
 - **Accessible-minded** – full keyboard play on desktop (board cursor with arrows/WASD + Enter, E = spellbook; arena WASD/arrows + Space, 2nd player IJKL + Enter; Esc = pause), focus styles, `prefers-reduced-motion` support, ARIA labels.

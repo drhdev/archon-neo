@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+### Added
+- **Install as app** button in the menu: uses the native install prompt where the browser offers one (Chrome, Edge, Android) and otherwise shows a short illustrated guide – iPhone/iPad “Add to Home Screen” with “Open as Web App”, Safari on the Mac “Add to Dock”. Started from the home screen, Archon NEO runs full screen without browser bars, like a native app.
+
 ### Changed
 - New social preview image in the look of 1.1: the armies stand on the arena floor between rune pillars, with a clear platform and language badge.
 - Link previews in messengers and social media now carry an English and German title and description, plus `og:image:type` and `twitter:image:alt`.

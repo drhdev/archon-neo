@@ -412,7 +412,7 @@ function resetState() {
 }
 function enterGame() {
   G.mode = 'board';
-  ['menu', 'gameover', 'pause', 'spells', 'rules', 'splash'].forEach(hide);
+  ['menu', 'gameover', 'pause', 'spells', 'rules', 'install', 'splash'].forEach(hide);
   if (intro.isOpen()) $('intro').classList.add('hidden');
   Sound.setTrack('board');
   setBoardHud(true);
@@ -1089,12 +1089,13 @@ const resetPads = (C) => { for (const pad of [C.pads.bottom, C.pads.top]) { pad.
 
 // --- keyboard (desktop): WASD/arrows + space; second player IJKL + Enter in pass & play
 const keys = new Set();
-const overlayOpen = () => ['spells', 'rules', 'pause', 'gameover', 'error', 'intro', 'splash', 'menu'].some((id) => !$(id).classList.contains('hidden'));
+const overlayOpen = () => ['spells', 'rules', 'install', 'pause', 'gameover', 'error', 'intro', 'splash', 'menu'].some((id) => !$(id).classList.contains('hidden'));
 window.addEventListener('keydown', (e) => {
   if (G.mode === 'combat' && /^(Arrow|Key[WASDIJKL]|Space|Enter)/.test(e.code)) e.preventDefault();
   keys.add(e.code);
   if (e.code === 'Escape') {
     if (!$('rules').classList.contains('hidden')) { hide('rules'); return; }
+    if (!$('install').classList.contains('hidden')) { hide('install'); return; }
     if (!$('spells').classList.contains('hidden')) { hide('spells'); updateHud(); return; }
     if (G.spell) { cancelSpell(); return; }
     if (inGame()) { if (G.paused) resume(); else pause(); }
@@ -2151,6 +2152,48 @@ document.querySelectorAll('[data-action="music"]').forEach((b) => b.addEventList
   Sound.play('tap');
 }));
 document.querySelectorAll('[data-open="legend"]').forEach((b) => b.addEventListener('click', () => { Sound.play('page'); hide('menu'); intro.open(0); }));
+
+// --- install as app (home screen). iPhone/iPad and Safari on the Mac have no install prompt,
+// so they get a short illustrated guide; Chromium browsers use their native prompt.
+const IS_STANDALONE = () => window.navigator.standalone === true
+  || ['standalone', 'fullscreen', 'minimal-ui'].some((m) => window.matchMedia && window.matchMedia(`(display-mode: ${m})`).matches);
+const IS_ANDROID = /Android/i.test(UA);
+const IS_APPLE_MOBILE = IS_IOS && !IS_ANDROID;
+const IS_MAC_SAFARI = !IS_IOS && /Macintosh/.test(UA) && /Safari\//.test(UA) && !/Chrome|Chromium|Edg|Firefox|OPR/.test(UA);
+const ICON_SHARE = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11H6a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const ICON_ADD = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+let installPrompt = null;
+function refreshInstall() {
+  const can = !IS_STANDALONE() && (installPrompt || IS_APPLE_MOBILE || IS_ANDROID || IS_MAC_SAFARI);
+  $('btn-install').classList.toggle('hidden', !can);
+}
+function openInstallGuide() {
+  const keys = IS_APPLE_MOBILE ? ['install.ios1', 'install.ios2', 'install.ios3', 'install.start']
+    : IS_MAC_SAFARI ? ['install.mac1', 'install.mac2']
+    : ['install.and1', 'install.and2', 'install.start'];
+  const list = $('install-steps');
+  list.replaceChildren();
+  for (const k of keys) {
+    const li = document.createElement('li');
+    li.innerHTML = t(k, { share: ICON_SHARE, add: ICON_ADD });
+    list.appendChild(li);
+  }
+  show('install');
+  try { $('btn-install-close').focus({ preventScroll: true }); } catch { /* ignore */ }
+}
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installPrompt = e; refreshInstall(); });
+window.addEventListener('appinstalled', () => { installPrompt = null; refreshInstall(); toast(t('install.done'), 2600); });
+$('btn-install').addEventListener('click', async () => {
+  Sound.play('select');
+  if (!installPrompt) { openInstallGuide(); return; }
+  const p = installPrompt;
+  installPrompt = null;
+  try { await p.prompt(); await p.userChoice; } catch { /* dismissed or unsupported */ }
+  refreshInstall();
+});
+$('btn-install-close').addEventListener('click', () => { hide('install'); Sound.play('tap'); });
+$('install').addEventListener('click', (e) => { if (e.target === $('install')) hide('install'); });
+refreshInstall();
 function toMenu() {
   saveGame();
   G.gameId++;

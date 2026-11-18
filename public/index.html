@@ -141,6 +141,7 @@
         <button class="btn ghost" type="button" data-open="legend" data-i18n="menu.legend">The Legend</button>
         <button class="btn ghost" type="button" data-open="rules" data-i18n="menu.rules">How to play</button>
       </div>
+      <button id="btn-install" class="btn install hidden" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v7m-3-3 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="install.button">Install as app</span></button>
       <div class="row">
         <button class="btn ghost small" type="button" data-action="music">Music: on</button>
         <button class="btn ghost small lang" type="button" data-action="lang" data-i18n="lang.switch" data-i18n-aria="lang.aria">Deutsch</button>
@@ -199,6 +200,17 @@
         <div id="unit-list"></div>
       </div>
       <button class="btn" id="btn-rules-close" type="button" data-i18n="rules.close">Got it</button>
+    </div>
+  </div>
+
+  <!-- Install guide (iPhone / iPad / browsers without an install prompt) -->
+  <div id="install" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="install-title">
+    <div class="panel center scroll">
+      <img class="install-icon" src="icons/icon-192.png" width="72" height="72" alt="">
+      <h2 id="install-title" data-i18n="install.title">Play as an app</h2>
+      <p class="subtitle" data-i18n="install.lead">Full screen, no browser bars, playable offline – straight from your home screen.</p>
+      <ol class="install-steps" id="install-steps"></ol>
+      <button class="btn" id="btn-install-close" type="button" data-i18n="install.close">Got it</button>
     </div>
   </div>
 
