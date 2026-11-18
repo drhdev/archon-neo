@@ -13,6 +13,7 @@
 <canvas id="c"></canvas>
 <script type="module">
 import { unitCanvas } from '../public/js/art.js';
+import { makeFloor, makeRock } from '../public/js/arena-art.js';
 
 const q = new URLSearchParams(location.search);
 const asset = q.get('asset') || 'og';
@@ -20,6 +21,7 @@ const size = Number(q.get('size') || 512);
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+const SERIF = 'ui-serif, "New York", Georgia, Cambria, "Noto Serif", "Times New Roman", serif';
 
 function unit(type, pal, cx, cy, s, flip = false) {
   const img = unitCanvas(type, pal, s * 2);
@@ -60,49 +62,102 @@ function icon(full) {
 }
 
 function og() {
-  const w = 1200, h = 630;
+  const w = 1200, h = 630, GROUND = 545;
   cv.width = w; cv.height = h;
-  const bg = ctx.createLinearGradient(0, 0, w, h);
-  bg.addColorStop(0, '#1b1206'); bg.addColorStop(0.5, '#07060f'); bg.addColorStop(1, '#140a2e');
+  const bg = ctx.createLinearGradient(0, 0, w, 0);
+  bg.addColorStop(0, '#1e1406'); bg.addColorStop(0.5, '#07060f'); bg.addColorStop(1, '#150a30');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, w, h);
   let seed = 7;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   ctx.fillStyle = '#c8c0ff';
-  for (let i = 0; i < 160; i++) { ctx.globalAlpha = 0.2 + rnd() * 0.5; ctx.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 1.6, 1 + rnd() * 1.6); }
+  for (let i = 0; i < 170; i++) { ctx.globalAlpha = 0.15 + rnd() * 0.5; ctx.fillRect(rnd() * w, rnd() * GROUND * 0.9, 1 + rnd() * 1.6, 1 + rnd() * 1.6); }
   ctx.globalAlpha = 1;
-  for (const [x, col] of [[220, 'rgba(255,180,60,0.28)'], [980, 'rgba(140,80,255,0.32)']]) {
-    const g = ctx.createRadialGradient(x, 380, 0, x, 380, 360);
+
+  // the arena floor of 1.1, seen at a low angle, fading into the night
+  const floor = makeFloor(600, 120, 2, [96, 84, 140], 0.35, 'light', 3);
+  // simple perspective: strips get taller and wider towards the viewer
+  const top = GROUND - 150, depth = h - top, N = 90;
+  for (let i = 0; i < N; i++) {
+    const t0 = i / N, t1 = (i + 1) / N;
+    const y0 = top + depth * t0 * t0, y1 = top + depth * t1 * t1;
+    const sw = w * (0.9 + 0.7 * t0);
+    ctx.drawImage(floor, 0, floor.height * t0, floor.width, floor.height / N + 1, (w - sw) / 2, y0, sw, y1 - y0 + 1);
+  }
+  let fade = ctx.createLinearGradient(0, GROUND - 160, 0, GROUND - 20);
+  fade.addColorStop(0, 'rgba(7,6,15,1)'); fade.addColorStop(1, 'rgba(7,6,15,0)');
+  ctx.fillStyle = fade; ctx.fillRect(0, GROUND - 161, w, 142);
+  fade = ctx.createLinearGradient(0, h - 70, 0, h);
+  fade.addColorStop(0, 'rgba(7,6,15,0)'); fade.addColorStop(1, 'rgba(7,6,15,0.85)');
+  ctx.fillStyle = fade; ctx.fillRect(0, h - 70, w, 70);
+
+  // warm and cold light of the two armies
+  for (const [x, col] of [[200, 'rgba(255,175,55,0.32)'], [1000, 'rgba(140,80,255,0.36)']]) {
+    const g = ctx.createRadialGradient(x, 400, 0, x, 400, 380);
     g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
   }
-  // armies
-  unit('wizard', 'light', 210, 400, 300);
-  unit('knight', 'light', 70, 470, 170);
-  unit('unicorn', 'light', 360, 500, 190);
-  unit('sorceress', 'dark', 990, 400, 300, true);
-  unit('dragon', 'dark', 1130, 470, 190, true);
-  unit('goblin', 'dark', 840, 500, 170, true);
+
+  // stone pillars between the armies
+  const rock = (x, y, r, s) => {
+    const k = makeRock(r, 2, s);
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.beginPath(); ctx.ellipse(x + r * 0.15, y + r * 0.62, r * 1.05, r * 0.32, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.drawImage(k.cv, x - k.size / 2, y - k.size / 2, k.size, k.size);
+    const rg = ctx.createRadialGradient(x + k.ax, y + k.ay, 0, x + k.ax, y + k.ay, r * 0.5);
+    rg.addColorStop(0, 'rgba(95,247,230,0.55)'); rg.addColorStop(1, 'rgba(95,247,230,0)');
+    ctx.fillStyle = rg; ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  };
+  rock(498, GROUND - 6, 40, 4);
+  rock(712, GROUND + 18, 30, 9);
+
+  // armies standing on the floor
+  const fig = (type, pal, x, s, flip) => {
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.beginPath(); ctx.ellipse(x, GROUND + s * 0.02, s * 0.3, s * 0.06, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.save();
+    ctx.shadowColor = pal === 'light' ? 'rgba(255,190,70,0.55)' : 'rgba(160,90,255,0.6)';
+    ctx.shadowBlur = 28;
+    unit(type, pal, x, GROUND - s * 0.44, s, flip);
+    ctx.restore();
+  };
+  fig('wizard', 'light', 205, 300);
+  fig('knight', 'light', 70, 170);
+  fig('unicorn', 'light', 345, 180);
+  fig('sorceress', 'dark', 995, 300, true);
+  fig('dragon', 'dark', 1125, 190, true);
+  fig('goblin', 'dark', 855, 165, true);
+
   // title
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  const tg = ctx.createLinearGradient(0, 140, 0, 250);
+  const tg = ctx.createLinearGradient(0, 110, 0, 220);
   tg.addColorStop(0, '#fff6d0'); tg.addColorStop(0.5, '#ffd76a'); tg.addColorStop(0.62, '#b48cff'); tg.addColorStop(1, '#6b3cff');
-  ctx.shadowColor = 'rgba(180,140,255,0.6)'; ctx.shadowBlur = 30;
+  ctx.shadowColor = 'rgba(180,140,255,0.6)'; ctx.shadowBlur = 32;
   ctx.fillStyle = tg;
-  ctx.font = `900 132px ${FONT}`;
-  ctx.fillText('ARCHON', w / 2, 190);
+  ctx.font = `900 136px ${FONT}`;
+  ctx.fillText('ARCHON', w / 2, 160);
   ctx.shadowBlur = 0;
   ctx.fillStyle = '#9b74ff';
-  ctx.font = `800 46px ${FONT}`;
-  ctx.fillText('N  E  O', w / 2, 290);
-  ctx.fillStyle = '#ece8ff';
-  ctx.font = `600 34px ${FONT}`;
-  ctx.fillText('Light vs. Dark', w / 2, 370);
-  emblem(w / 2, 470, 46);
-  ctx.fillStyle = 'rgba(236,232,255,0.65)';
-  ctx.font = `500 24px ${FONT}`;
-  ctx.fillText('Strategy & real-time arena duels · free in your browser', w / 2, 568);
+  ctx.font = `800 42px ${FONT}`;
+  ctx.fillText('N  E  O', w / 2, 258);
+  ctx.fillStyle = '#f1ecff';
+  ctx.font = `italic 600 36px ${SERIF}`;
+  ctx.fillText('Light vs. Dark', w / 2, 330);
+  ctx.fillStyle = 'rgba(236,232,255,0.72)';
+  ctx.font = `italic 400 23px ${SERIF}`;
+  ctx.fillText('Strategy on a magic board · real-time arena duels', w / 2, 376);
+  emblem(w / 2, 440, 26);
+  // footer badge
+  ctx.font = `600 16px ${FONT}`;
+  const tag = 'Free  ·  iPhone  ·  Android  ·  Desktop  ·  English & Deutsch';
+  const tw = ctx.measureText(tag).width + 44;
+  ctx.fillStyle = 'rgba(10,8,22,0.72)';
+  ctx.strokeStyle = 'rgba(155,116,255,0.45)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.roundRect(w / 2 - tw / 2, 588, tw, 30, 15); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(236,232,255,0.82)';
+  ctx.fillText(tag, w / 2, 604);
 }
 
 if (asset === 'og') og();

@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+### Changed
+- New social preview image in the look of 1.1: the armies stand on the arena floor between rune pillars, with a clear platform and language badge.
+- Link previews in messengers and social media now carry an English and German title and description, plus `og:image:type` and `twitter:image:alt`.
+
 ### Planned
 - Live online battles between two devices
 - Hall of Fame and leaderboard
