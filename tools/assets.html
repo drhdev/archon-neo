@@ -1,0 +1,113 @@
+<!doctype html>
+<!--
+  Renders the PNG assets (app icons, social preview) from the game's own artwork.
+  Used by scripts/render-assets.sh with headless Chrome:  assets.html?asset=og|icon|maskable&size=N
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Archon NEO asset renderer</title>
+  <style>html, body { margin: 0; background: transparent; overflow: hidden; } canvas { display: block; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+import { unitCanvas } from '../public/js/art.js';
+
+const q = new URLSearchParams(location.search);
+const asset = q.get('asset') || 'og';
+const size = Number(q.get('size') || 512);
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+
+function unit(type, pal, cx, cy, s, flip = false) {
+  const img = unitCanvas(type, pal, s * 2);
+  ctx.save();
+  ctx.translate(cx, cy);
+  if (flip) ctx.scale(-1, 1);
+  ctx.drawImage(img, -s / 2, -s / 2, s, s);
+  ctx.restore();
+}
+
+function emblem(cx, cy, r) {
+  const gl = ctx.createLinearGradient(0, cy - r, 0, cy + r);
+  gl.addColorStop(0, '#fff3c4'); gl.addColorStop(1, '#ff9d2e');
+  const gd = ctx.createLinearGradient(0, cy - r, 0, cy + r);
+  gd.addColorStop(0, '#d6c2ff'); gd.addColorStop(1, '#6b3cff');
+  ctx.fillStyle = gl;
+  ctx.beginPath(); ctx.moveTo(cx, cy - r); ctx.lineTo(cx - r, cy); ctx.lineTo(cx, cy + r); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = gd;
+  ctx.beginPath(); ctx.moveTo(cx, cy - r); ctx.lineTo(cx + r, cy); ctx.lineTo(cx, cy + r); ctx.closePath(); ctx.fill();
+  const i = r * 0.46;
+  ctx.fillStyle = '#07060f';
+  ctx.strokeStyle = '#5ff7e6';
+  ctx.lineWidth = r * 0.08;
+  ctx.beginPath(); ctx.moveTo(cx, cy - i); ctx.lineTo(cx + i, cy); ctx.lineTo(cx, cy + i); ctx.lineTo(cx - i, cy); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+}
+
+function icon(full) {
+  cv.width = cv.height = size;
+  ctx.fillStyle = '#07060f';
+  if (full) ctx.fillRect(0, 0, size, size);
+  else { ctx.beginPath(); ctx.roundRect(0, 0, size, size, size * 0.22); ctx.fill(); }
+  const glow = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size * 0.6);
+  glow.addColorStop(0, 'rgba(120,70,255,0.35)'); glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, size, size);
+  emblem(size / 2, size / 2, size * (full ? 0.3 : 0.38));
+}
+
+function og() {
+  const w = 1200, h = 630;
+  cv.width = w; cv.height = h;
+  const bg = ctx.createLinearGradient(0, 0, w, h);
+  bg.addColorStop(0, '#1b1206'); bg.addColorStop(0.5, '#07060f'); bg.addColorStop(1, '#140a2e');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  ctx.fillStyle = '#c8c0ff';
+  for (let i = 0; i < 160; i++) { ctx.globalAlpha = 0.2 + rnd() * 0.5; ctx.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 1.6, 1 + rnd() * 1.6); }
+  ctx.globalAlpha = 1;
+  for (const [x, col] of [[220, 'rgba(255,180,60,0.28)'], [980, 'rgba(140,80,255,0.32)']]) {
+    const g = ctx.createRadialGradient(x, 380, 0, x, 380, 360);
+    g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  }
+  // armies
+  unit('wizard', 'light', 210, 400, 300);
+  unit('knight', 'light', 70, 470, 170);
+  unit('unicorn', 'light', 360, 500, 190);
+  unit('sorceress', 'dark', 990, 400, 300, true);
+  unit('dragon', 'dark', 1130, 470, 190, true);
+  unit('goblin', 'dark', 840, 500, 170, true);
+  // title
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const tg = ctx.createLinearGradient(0, 140, 0, 250);
+  tg.addColorStop(0, '#fff6d0'); tg.addColorStop(0.5, '#ffd76a'); tg.addColorStop(0.62, '#b48cff'); tg.addColorStop(1, '#6b3cff');
+  ctx.shadowColor = 'rgba(180,140,255,0.6)'; ctx.shadowBlur = 30;
+  ctx.fillStyle = tg;
+  ctx.font = `900 132px ${FONT}`;
+  ctx.fillText('ARCHON', w / 2, 190);
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#9b74ff';
+  ctx.font = `800 46px ${FONT}`;
+  ctx.fillText('N  E  O', w / 2, 290);
+  ctx.fillStyle = '#ece8ff';
+  ctx.font = `600 34px ${FONT}`;
+  ctx.fillText('Light vs. Dark', w / 2, 370);
+  emblem(w / 2, 470, 46);
+  ctx.fillStyle = 'rgba(236,232,255,0.65)';
+  ctx.font = `500 24px ${FONT}`;
+  ctx.fillText('Strategy & real-time arena duels · free in your browser', w / 2, 568);
+}
+
+if (asset === 'og') og();
+else icon(asset === 'maskable');
+document.title = 'ready';
+</script>
+</body>
+</html>

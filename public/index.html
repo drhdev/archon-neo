@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Archon NEO – Light vs. Dark · Free strategy &amp; arena browser game</title>
+  <meta name="description" content="Archon NEO is a free, modern fan tribute to the 1983 classic: turn-based strategy on a 9×9 board plus real-time arena duels. Plays offline in your browser on iPhone, Android and desktop – in English and German.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="drhdev">
+  <meta name="application-name" content="Archon NEO">
+  <meta name="generator" content="Hand-written HTML, CSS and JavaScript">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#07060f">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Archon NEO">
+  <link rel="canonical" href="__SITE_URL__/">
+
+  <!-- Open Graph / social previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Archon NEO">
+  <meta property="og:title" content="Archon NEO – Light vs. Dark">
+  <meta property="og:description" content="A modern fan tribute to the 1983 classic: strategy on a magic board plus real-time arena duels. Free, offline-ready, English &amp; German.">
+  <meta property="og:url" content="__SITE_URL__/">
+  <meta property="og:image" content="__SITE_URL__/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Archon NEO – the armies of Light and Darkness facing each other">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Archon NEO – Light vs. Dark">
+  <meta name="twitter:description" content="Strategy meets real-time arena duels. A free fan tribute to the 1983 classic.">
+  <meta name="twitter:image" content="__SITE_URL__/og-image.jpg">
+
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="modulepreload" href="js/i18n.js">
+  <link rel="modulepreload" href="js/art.js">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "url": "__SITE_URL__/",
+    "name": "Archon NEO",
+    "alternateName": "Archon NEO – Light vs. Dark",
+    "description": "A free, modern fan tribute to the 1983 strategy and action classic: turn-based play on a 9×9 board plus real-time arena duels.",
+    "genre": ["Strategy", "Action", "Fantasy"],
+    "gamePlatform": ["Web browser", "iOS", "Android", "Desktop"],
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
+    "playMode": ["SinglePlayer", "MultiPlayer"],
+    "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2 },
+    "inLanguage": ["en", "de"],
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "author": { "@type": "Person", "name": "drhdev" },
+    "license": "https://www.gnu.org/licenses/gpl-3.0.html"
+  }
+  </script>
+</head>
+<body>
+  <noscript>
+    <div class="noscript">Archon NEO needs JavaScript. · Archon NEO benötigt JavaScript.</div>
+  </noscript>
+
+  <canvas id="game" role="img" aria-label="Archon NEO game board"></canvas>
+  <div id="safe-probe" aria-hidden="true"></div>
+
+  <!-- Board HUD -->
+  <header id="hud-top" class="hud hidden">
+    <button id="btn-pause" class="icon-btn" type="button" data-i18n-aria="hud.menu" aria-label="Menu">☰</button>
+    <div id="turn-label" aria-live="polite"></div>
+    <div id="lum">
+      <span data-i18n="hud.cycle">CYCLE</span>
+      <div id="lum-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </header>
+  <footer id="hud-bottom" class="hud hidden">
+    <div id="info" aria-live="polite"></div>
+    <button id="btn-spell" class="hidden" type="button"></button>
+  </footer>
+
+  <!-- Main menu -->
+  <main id="menu" class="overlay">
+    <div class="panel center scroll">
+      <h1 class="title">ARCHON<span>NEO</span></h1>
+      <p class="subtitle" data-i18n="menu.subtitle">Light vs. Dark</p>
+
+      <button id="btn-continue" class="btn accent hidden" type="button" data-i18n="menu.continue">Continue game</button>
+
+      <div class="field">
+        <span class="label" data-i18n="menu.difficulty">AI difficulty</span>
+        <div class="seg" role="group">
+          <button type="button" data-diff="easy" data-i18n="diff.easy">Easy</button>
+          <button type="button" data-diff="normal" data-i18n="diff.normal">Normal</button>
+          <button type="button" data-diff="hard" data-i18n="diff.hard">Hard</button>
+        </div>
+      </div>
+
+      <button class="btn primary-light" type="button" data-start="ai-light" data-i18n="menu.playLight">1 Player · Light</button>
+      <button class="btn primary-dark" type="button" data-start="ai-dark" data-i18n="menu.playDark">1 Player · Darkness</button>
+      <button class="btn" type="button" data-start="pvp" data-i18n="menu.pvp">2 Players · Pass &amp; Play</button>
+      <div class="row">
+        <button class="btn ghost" type="button" data-open="rules" data-i18n="menu.rules">How to play</button>
+        <button class="btn ghost lang" type="button" data-action="lang" data-i18n="lang.switch" data-i18n-aria="lang.aria">Deutsch</button>
+      </div>
+
+      <section class="soon" aria-labelledby="soon-title">
+        <h2 id="soon-title" data-i18n="menu.soon">Coming soon</h2>
+        <ul>
+          <li data-i18n="soon.online">Live online battles</li>
+          <li data-i18n="soon.hof">Hall of Fame &amp; leaderboard</li>
+          <li data-i18n="soon.lobby">Lobby – challenge human players who are ready to play</li>
+        </ul>
+      </section>
+
+      <p class="hint" data-i18n="menu.hint"></p>
+      <p class="fineprint">
+        <span data-i18n="menu.disclaimer">A non-commercial fan tribute. Not affiliated with the original rights holders.</span><br>
+        <a href="https://github.com/drhdev/archon-neo" target="_blank" rel="noopener noreferrer">GitHub</a> · GPL-3.0 · <span id="version"></span>
+      </p>
+    </div>
+  </main>
+
+  <!-- Pause -->
+  <div id="pause" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <div class="panel center">
+      <h2 id="pause-title" data-i18n="pause.title">Paused</h2>
+      <button class="btn" id="btn-resume" type="button" data-i18n="pause.resume">Resume</button>
+      <button class="btn" id="btn-sound" type="button">Sound: on</button>
+      <div class="row">
+        <button class="btn ghost" type="button" data-open="rules" data-i18n="menu.rules">How to play</button>
+        <button class="btn ghost lang" type="button" data-action="lang" data-i18n="lang.switch" data-i18n-aria="lang.aria">Deutsch</button>
+      </div>
+      <button class="btn ghost" id="btn-quit" type="button" data-i18n="pause.quit">Main menu</button>
+    </div>
+  </div>
+
+  <!-- Spellbook -->
+  <div id="spells" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="spell-title">
+    <div class="panel">
+      <h2 id="spell-title" data-i18n="spells.title">Spellbook</h2>
+      <div id="spell-list" class="scroll"></div>
+      <button class="btn ghost" id="btn-spell-close" type="button" data-i18n="spells.cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div id="rules" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+    <div class="panel">
+      <h2 id="rules-title" data-i18n="rules.title">How to play</h2>
+      <div class="scroll rules-text">
+        <div data-i18n-html="rules.html"></div>
+        <h3 data-i18n="rules.units">Units</h3>
+        <div id="unit-list"></div>
+      </div>
+      <button class="btn" id="btn-rules-close" type="button" data-i18n="rules.close">Got it</button>
+    </div>
+  </div>
+
+  <!-- Game over -->
+  <div id="gameover" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="go-title">
+    <div class="panel center">
+      <h2 id="go-title" class="title small"></h2>
+      <p id="go-reason" class="subtitle"></p>
+      <button class="btn primary-light" id="btn-again" type="button" data-i18n="go.again">Rematch</button>
+      <button class="btn ghost" id="btn-go-menu" type="button" data-i18n="go.menu">Main menu</button>
+    </div>
+  </div>
+
+  <!-- Fatal error -->
+  <div id="error" class="overlay hidden" role="alertdialog" aria-modal="true" aria-labelledby="error-title">
+    <div class="panel center">
+      <h2 id="error-title" data-i18n="error.title">Something went wrong</h2>
+      <p class="subtitle" data-i18n="error.text"></p>
+      <button class="btn primary-light" id="btn-reload" type="button" data-i18n="error.reload">Reload</button>
+    </div>
+  </div>
+
+  <div id="rotate" aria-hidden="true"><div><span class="rotate-icon">⟳</span><p data-i18n="rotate.text">Please turn your device to portrait mode.</p></div></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/game.js"></script>
+  <script nomodule src="js/nomodule.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+# Archon NEO – production compose file (Coolify-ready).
+#
+# Coolify: create a new resource → "Docker Compose" → point it at this repository.
+#   SERVICE_FQDN_ARCHON_8080 tells Coolify to generate/attach a domain and route it to port 8080.
+#   Set your domain in the Coolify UI; the container picks it up for canonical/OG/sitemap URLs.
+# Plain Docker: docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
+services:
+  archon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: archon-neo:latest
+    restart: unless-stopped
+    environment:
+      - SERVICE_FQDN_ARCHON_8080
+      - SITE_URL=${SITE_URL:-}
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:size=16m
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 64M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
